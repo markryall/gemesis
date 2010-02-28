@@ -1,0 +1,15 @@
+= gemesis
+
+This is a gem that provides some lightweight simple utilities for managing a rubygem.
+
+== usage
+
+Create a gem specification file called gemspec, initialise a git or mercurial repository and create Rakefile containing:
+
+<tt>
+require 'gemesis/rake'
+</tt>
+
+This will add five rake tasks in a gem namespace: push, build, install, uninstall and reinstall
+
+Note that push will create a repository tag so it is recommended you increment the gem version and commit all changes prior to executing a push.
