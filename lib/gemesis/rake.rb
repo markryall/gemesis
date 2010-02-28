@@ -12,7 +12,7 @@ namespace :gem do
   end
 
   task :build_gem do
-    sh "gem build #{spec.name}.gemspec"
+    sh "gem build gemspec"
   end
 
   desc "install #{spec.name} locally"
