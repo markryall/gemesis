@@ -18,12 +18,12 @@ namespace :gem do
 
   desc "install #{spec.name} locally"
   task :install => :build do
-    sh "gem install #{spec.name}-#{spec.version}.gem --no-ri --no-rdoc"
+    sh "#{ENV['SUDO']} gem install #{spec.name}-#{spec.version}.gem --no-ri --no-rdoc"
   end
 
   desc "uninstall #{spec.name} locally"
   task :uninstall => :build do
-    sh "gem uninstall #{spec.name} -x -a"
+    sh "#{ENV['SUDO']} gem uninstall #{spec.name} -x -a"
   end
 
   desc "reinstall #{spec.name} locally"
