@@ -1,6 +1,6 @@
 = gemesis
 
-This is a gem that provides some lightweight simple utilities for managing a rubygem.
+This is a gem that provides some simple rake tasks for managing a rubygem.
 
 == usage
 
@@ -11,5 +11,7 @@ require 'gemesis/rake'
 </tt>
 
 This will add five rake tasks in a gem namespace: push, build, install, uninstall and reinstall
+
+To run gem installation or uninstallation with sudo - set an environment variable SUDO to sudo
 
 Note that push will create a repository tag so it is recommended you increment the gem version and commit all changes prior to executing a push.
