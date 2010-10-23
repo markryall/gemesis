@@ -5,6 +5,14 @@ namespace :gem do
 
   raise 'gemesis requires a git or mercurial repository' unless vcs
 
+  desc "release new #{spec.name} - push then increment patch"
+  task :release => [:push, :patch] do
+    if vcs
+      sh "#{vcs} add gemspec"
+      sh "#{vcs} commit -m \"bumped version for next release\""
+    end
+  end
+
   desc "push new #{spec.name} release and #{vcs} tag"
   task :push => :build do
     sh "#{vcs} tag #{spec.version}" if vcs
