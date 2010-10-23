@@ -3,8 +3,6 @@ namespace :gem do
   vcs = 'git' if File.exist?('.git')
   vcs = 'hg' if File.exist?('.hg')
 
-  raise 'gemesis requires a git or mercurial repository' unless vcs
-
   desc "release new #{spec.name} - push then increment patch"
   task :release => [:push, :patch] do
     if vcs

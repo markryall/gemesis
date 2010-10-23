@@ -2,16 +2,55 @@
 
 This is a gem that provides some simple rake tasks for managing a rubygem.
 
+== creating a gem
+
+=== create a gem specification file called gemspec
+
+For example:
+
+    Gem::Specification.new do |s|
+      s.name = 'gemesis'
+      s.version = '0.0.4'
+      s.summary = 'some lightweight utilities to assist in managing a rubygem'
+      s.authors << 'Mark Ryall'
+      s.email = 'mark@ryall.name'
+      s.homepage = %q{http://github.com/markryall/gemesis}
+      s.files = Dir['bin/*'] + Dir['lib/**/*'] + ['README.rdoc', 'MIT-LICENSE']
+      s.executables << 'collect_gems'
+    end
+
+Make sure the version line is formatted as indicated - the major, minor and patch tasks will not work otherwise.
+
+=== initialise a git or mercurial repository
+
+    hg/git init
+
+=== create Rakefile
+
+  require 'gemesis/rake'
+
 == usage
 
-Create a gem specification file called gemspec, initialise a git or mercurial repository and create Rakefile containing:
+This will add the following rake tasks in a gem namespace:
 
-<tt>
-require 'gemesis/rake'
-</tt>
-
-This will add five rake tasks in a gem namespace: push, build, install, uninstall and reinstall
+* release - push, then increments version in gemspec
+* push - builds the gem, pushes to rubyforge and 
+* build - builds the gem file
+* install - installs the gem file
+* uninstall - uninstalls the gem
+* reinstall - uninstalls and installs the gem
+* major - increments the major version number
+* minor - increments the minor version number
+* patch - increments the patch number
 
 To run gem installation or uninstallation with sudo - set an environment variable SUDO to sudo
 
 Note that push will create a repository tag so it is recommended you increment the gem version and commit all changes prior to executing a push.
+
+Refer to http://semver.org/ for some sensible tips on versioning.
+
+== collect_gems
+
+If you checkout any gem that uses gemesis (or has a gem specification file caled gemspec), you can use the collect_gems executable to install all necessary runtime and development depencies.
+
+collect_gems was completely stolen from http://github.com/mdub/gem_collector 
