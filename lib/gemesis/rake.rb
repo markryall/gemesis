@@ -28,4 +28,40 @@ namespace :gem do
 
   desc "reinstall #{spec.name} locally"
   task :reinstall => [:uninstall, :install]
+
+  def bump
+    FileUtils.mv 'gemspec', 'gemspec.tmp'
+
+    File.open('gemspec','w') do |io_out|
+      File.open('gemspec.tmp') do |io_in|
+        io_in.each do |line|
+          line.chomp!
+          if line =~ /version = '(\d+)\.(\d+)\.(\d+)'/
+            versions = [$1.to_i,$2.to_i,$3.to_i]
+            yield versions
+            io_out.puts "  s.version = '#{versions.join('.')}'"
+          else
+            io_out.puts line
+          end
+        end
+      end
+    end
+    
+    FileUtils.rm 'gemspec.tmp'
+  end
+  
+  desc "bump major version"
+  task :major do
+    bump {|versions| versions[0] += 1}
+  end
+
+  desc "bump minor version"
+  task :minor do
+    bump {|versions| versions[1] += 1}
+  end
+
+  desc "bump patch version"
+  task :patch do
+    bump {|versions| versions[2] += 1}
+  end
 end
