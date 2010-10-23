@@ -1,0 +1,48 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+
+module GemCollector
+  extend self
+ 
+  # Shadow Kernel#gem, extending it to auto-install missing gems
+  def gem(name, *version_requirements)
+    dependency = Gem::Dependency.new(name, *version_requirements)
+    if Gem.source_index.search(dependency).empty?
+      puts "Installing #{dependency}"
+      `gem install #{name} --version \"#{version_requirements.first}\"`
+    else
+      puts "#{dependency} is already installed"
+    end
+  end
+
+  def eval_block &block
+    instance_eval &block
+  end
+
+  def eval(*args)
+    instance_eval(*args)
+  end
+ 
+  def load(file)
+    puts "loading #{file}"
+    eval(File.read(file), file)
+  end
+end
+
+path = ARGV.shift
+path ||= 'Gemfile'
+if File.exist? path
+  puts "Loading dependencies specified in #{File.expand_path(path)}"
+  GemCollector.load path
+else
+  puts "Did not find a file called #{path} to load"
+end
+if File.exist? 'gemspec'
+  puts "Loading dependencies specified in #{File.expand_path('gemspec')}"
+  Gem::Specification.load('gemspec').dependencies.each do |dep|
+    GemCollector.eval_block { gem dep.name, dep.requirement }
+  end
+else
+  puts "Did not find a gemspec file to load"
+end

@@ -5,5 +5,6 @@ Gem::Specification.new do |s|
   s.authors << 'Mark Ryall'
   s.email = 'mark@ryall.name'
   s.homepage = %q{http://github.com/markryall/gemesis}
-  s.files = Dir['lib/**/*'] + ['README.rdoc', 'MIT-LICENSE']
+  s.files = Dir['bin/*'] + Dir['lib/**/*'] + ['README.rdoc', 'MIT-LICENSE']
+  s.executables << 'collect_gems'
 end
